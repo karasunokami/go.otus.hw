@@ -1,3 +1,3 @@
-module github.com/karasunokami/go.otus.h2/hw3
+module github.com/karasunokami/otus.go.hw/hw3
 
 go 1.13
