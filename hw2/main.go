@@ -1,14 +1,14 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	testStrings := [...]string{"a4bc2d5e", "abcd", "45", "7q", "q3"}
+	testStrings := [...]string{"a4bc2d5e", "abcd", "45", "7q", "q3", "a11"}
 
 	for _, testString := range testStrings {
 		fmt.Println("input:  " + testString)
@@ -22,33 +22,33 @@ func main() {
 	}
 }
 
-func Unpack(str string) (result string, err error) {
-	var (
-		lastChar  string
-		numString string
-	)
+func Unpack(str string) (string, error) {
+	result := strings.Builder{}
 
-	slice := strings.Split(str, "")
+	charsSlice := regexp.MustCompile(`(?m)\D+`).FindAllString(str, -1)
+	numsSlice := regexp.MustCompile(`(?m)\d+`).FindAllString(str, -1)
 
-	for _, char := range slice {
-		if _, err := strconv.ParseInt(char, 10, 64); err == nil {
-			numString += char
+	if is, _ := regexp.MatchString(`^\d`, str); is == true {
+		return "", fmt.Errorf("invalid string: %s", str)
+	}
 
-			if lastChar == "" {
-				return "", errors.New("invalid string")
+	if len(charsSlice) == 0 {
+		return "", fmt.Errorf("invalid string: %s", str)
+	}
+
+	for i := 0; i < len(charsSlice); i++ {
+		result.WriteString(charsSlice[i])
+
+		if i < len(numsSlice) {
+			num, err := strconv.Atoi(numsSlice[i])
+
+			if err == nil {
+				result.WriteString(strings.Repeat(
+					charsSlice[i][len(charsSlice[i]) - 1:],
+					num - 1))
 			}
-		} else {
-			lastChar = char
-			result += char
-			continue
-		}
-
-		if numString != "" {
-			count, _ := strconv.ParseInt(numString, 10, 64)
-			result += strings.Repeat(lastChar, int(count) - 1)
-			numString = ""
 		}
 	}
 
-	return
+	return result.String(), nil
 }
