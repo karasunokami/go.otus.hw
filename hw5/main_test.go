@@ -12,7 +12,7 @@ func TestRunWithNoErrors(t *testing.T) {
 	task3 := func() error { return nil }
 	task4 := func() error { return errors.New("error") }
 
-	tasks := []func() error{task1, task2, task3, task4}
+	tasks := []task{task1, task2, task3, task4}
 
 	err := Run(tasks, 3, 3)
 	assert.Equal(t, nil, err)
@@ -21,10 +21,10 @@ func TestRunWithNoErrors(t *testing.T) {
 func TestRunWithError(t *testing.T) {
 	task1 := func() error { return nil }
 	task2 := func() error { return errors.New("error") }
-	task3 := func() error { return nil }
+	task3 := func() error { return errors.New("error") }
 	task4 := func() error { return errors.New("error") }
 
-	tasks := []func() error{task1, task2, task3, task4}
+	tasks := []task{task1, task2, task3, task4}
 
 	err := Run(tasks, 3, 2)
 	expected := errors.New("errors limit exceeded")
