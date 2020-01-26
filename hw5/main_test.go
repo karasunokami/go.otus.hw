@@ -30,3 +30,11 @@ func TestRunWithError(t *testing.T) {
 	expected := errors.New("errors limit exceeded")
 	assert.Equal(t, expected, err)
 }
+
+func TestRunWithZeroCountOfGoroutines(t *testing.T) {
+	var tasks []task
+
+	err := Run(tasks, 0, 2)
+	expected := errors.New("cant handle non or negative goroutines count")
+	assert.Equal(t, expected, err)
+}
