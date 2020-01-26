@@ -7,6 +7,10 @@ import (
 )
 
 func Run(tasks []task, goroutinesCount int, errorsLimit int) error {
+	if goroutinesCount <= 0 {
+		return errors.New("cant handle non or negative goroutines count")
+	}
+
 	wg := &sync.WaitGroup{}
 
 	errorsChan := make(chan error)
