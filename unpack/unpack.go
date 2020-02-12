@@ -7,21 +7,6 @@ import (
 	"strings"
 )
 
-func main() {
-	testStrings := [...]string{"a4bc2d5e", "abcd", "45", "7q", "q3", "a11"}
-
-	for _, testString := range testStrings {
-		fmt.Println("input:  " + testString)
-		resultString, err := Unpack(testString)
-
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Println("result: " + resultString)
-		}
-	}
-}
-
 func Unpack(str string) (string, error) {
 	result := strings.Builder{}
 
