@@ -1,20 +1,16 @@
 package twf
 
 import (
-	"fmt"
+	"errors"
 	"sort"
 	"strings"
 )
 
-func main() {
-	text := "Олень - северное животное. В летнее время оленям в тайге жарко, а в горах даже в июле холодно. Олень как бы создан для северных просторов жёсткого ветра длинных морозных ночей. Олень легко бежит вперёд по тайге подминает под себя кусты переплывает быстрые реки. Олень не тонет потому, что каждая его шерстинка это длинная трубочка которую внутри наполняет воздух. Нос у оленя покрыт серебристой шёрсткой. Если бы шерсти на носу не было, олень бы его отморозил."
+func Find(text string, size int) (result []string, err error) {
+	if text == "" {
+		return nil, errors.New("text parameter cannot be empty")
+	}
 
-	result := Find(text)
-
-	fmt.Println(result)
-}
-
-func Find(text string) (result []string) {
 	text = strings.Replace(text, ",", "", -1)
 	text = strings.Replace(text, ".", "", -1)
 
@@ -49,7 +45,7 @@ func Find(text string) (result []string) {
 		return keyValueSlice[i].Value > keyValueSlice[j].Value
 	})
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < size; i++ {
 		if i < len(keyValueSlice) {
 			result = append(result, keyValueSlice[i].Key)
 		} else {
@@ -57,5 +53,5 @@ func Find(text string) (result []string) {
 		}
 	}
 
-	return result
+	return result, nil
 }
