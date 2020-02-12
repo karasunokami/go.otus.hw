@@ -1,4 +1,4 @@
-package main
+package unpack
 
 import (
 	"fmt"
@@ -44,8 +44,8 @@ func Unpack(str string) (string, error) {
 
 			if err == nil {
 				result.WriteString(strings.Repeat(
-					charsSlice[i][len(charsSlice[i]) - 1:],
-					num - 1))
+					charsSlice[i][len(charsSlice[i])-1:],
+					num-1))
 			}
 		}
 	}

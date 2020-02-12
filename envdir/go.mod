@@ -1,4 +1,4 @@
-module github.com/karasunokami/go.otus.hw/hw5
+module github.com/karasunokami/go.otus.hw/envdir
 
 go 1.13
 

@@ -1,4 +1,4 @@
-module github.com/karasunokami/go.otus.hw/hw2
+module github.com/karasunokami/go.otus.hw/unpack
 
 go 1.13
 

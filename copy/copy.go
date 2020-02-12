@@ -1,4 +1,4 @@
-package hw6
+package copy
 
 import (
 	"errors"
@@ -48,7 +48,7 @@ func Copy(from, to string, limit, offset int) error {
 	return nil
 }
 
-func read(from string, offset, size int, bar  *pb.ProgressBar) ([]byte, error) {
+func read(from string, offset, size int, bar *pb.ProgressBar) ([]byte, error) {
 	buf := make([]byte, size)
 
 	file, err := os.Open(from)

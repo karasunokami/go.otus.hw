@@ -1,4 +1,4 @@
-module github.com/karasunokami/go.otus.hw/hw6
+module github.com/karasunokami/go.otus.hw/copy
 
 go 1.13
 

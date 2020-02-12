@@ -1,4 +1,4 @@
-package hw6
+package copy
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func createFiles() (string, string){
+func createFiles() (string, string) {
 	test := "123456790"
 	b := []byte(test)
 	path := "/tmp/test1"

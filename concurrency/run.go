@@ -1,4 +1,4 @@
-package hw5
+package concurrency
 
 import (
 	"errors"

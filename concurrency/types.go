@@ -1,3 +1,3 @@
-package hw5
+package concurrency
 
 type task func() error

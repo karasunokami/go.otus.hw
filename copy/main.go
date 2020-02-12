@@ -1,4 +1,4 @@
-package hw6
+package copy
 
 import (
 	"flag"

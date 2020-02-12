@@ -1,4 +1,4 @@
-module github.com/karasunokami/go.otus.hw/hw1
+module github.com/karasunokami/go.otus.hw/ntp
 
 go 1.13
 
