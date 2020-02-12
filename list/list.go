@@ -1,21 +1,5 @@
 package list
 
-import (
-	"fmt"
-)
-
-func main() {
-	list := new(List)
-
-	list.PushFront(1)
-	list.PushFront(2)
-	list.PushFront(3)
-
-	fmt.Println("list len: ", list.Len())
-	fmt.Println("last element: ", list.Last().Value)
-	fmt.Println("first element: ", list.First().Value)
-}
-
 type List struct {
 	root Item
 	len  int
