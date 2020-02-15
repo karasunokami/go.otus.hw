@@ -7,9 +7,9 @@ import (
 	"os"
 )
 
-func Copy(from, to string, limit, offset int) error {
-	var size int
+var bufSize = 1024
 
+func Copy(from, to string, limit, offset int) error {
 	fi, err := os.Stat(from)
 	if err != nil {
 		return err
@@ -22,23 +22,59 @@ func Copy(from, to string, limit, offset int) error {
 		return err
 	}
 
-	if limit == 0 {
-		size = fileSize - offset
-	} else {
+	var size int
+
+	if limit > 0 {
 		size = limit
+	} else {
+		size = fileSize - offset
 	}
 
-	bar := pb.StartNew(size)
-
-	buf, err := read(from, offset, size, bar)
+	fileFrom, err := os.Open(from)
 	if err != nil {
 		return err
 	}
 
-	test := string(buf)
-	_ = test
+	fileTo, err := os.Create(to)
+	if err != nil {
+		return err
+	}
 
-	err = write(to, buf)
+	bar := pb.StartNew(size)
+	buf := make([]byte, bufSize)
+	toFileOffset := 0
+
+	for {
+		if toFileOffset > size {
+			break
+		}
+
+		if size-toFileOffset < bufSize {
+			buf = make([]byte, size-toFileOffset)
+		}
+
+		err := read(fileFrom, offset, bufSize, &buf)
+		if err != nil {
+			return err
+		}
+
+		err = write(fileTo, toFileOffset, &buf)
+		if err != nil {
+			return err
+		}
+
+		toFileOffset += bufSize
+		offset += bufSize
+
+		bar.Add(bufSize)
+	}
+
+	err = fileTo.Close()
+	if err != nil {
+		return err
+	}
+
+	err = fileFrom.Close()
 	if err != nil {
 		return err
 	}
@@ -48,49 +84,37 @@ func Copy(from, to string, limit, offset int) error {
 	return nil
 }
 
-func read(from string, offset, size int, bar *pb.ProgressBar) ([]byte, error) {
-	buf := make([]byte, size)
-
-	file, err := os.Open(from)
+func read(file *os.File, offset, size int, buf *[]byte) error {
+	_, err := file.Seek(int64(offset), 0)
 	if err != nil {
-		return buf, err
+		return err
 	}
 
-	_, err = file.Seek(int64(offset), 0)
-	if err != nil {
-		return buf, err
-	}
+	offset = 0
 
-	for size > 0 {
-		read, err := file.Read(buf)
+	for offset < size {
+		read, err := file.Read((*buf)[offset:])
 		if err != nil {
-			return buf, err
+			return err
 		}
 
-		size -= read
-		bar.Add(read)
+		offset += read
 
 		if err == io.EOF || read == 0 {
 			break
 		}
 	}
 
-	err = file.Close()
-	if err != nil {
-		return buf, err
-	}
-
-	return buf, nil
+	return nil
 }
 
-func write(to string, buf []byte) error {
-	file, _ := os.Create(to)
-	_, err := file.Write(buf)
+func write(file *os.File, offset int, buf *[]byte) error {
+	_, err := file.Seek(int64(offset), 0)
 	if err != nil {
 		return err
 	}
 
-	err = file.Close()
+	_, err = file.Write(*buf)
 	if err != nil {
 		return err
 	}
