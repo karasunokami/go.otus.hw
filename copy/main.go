@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"github.com/karasunokami/go.otus.hw/copy"
+	"github.com/karasunokami/go.otus.hw/copy/copy"
 	"log"
 )
 
