@@ -1,7 +1,8 @@
-package copy
+package main
 
 import (
 	"flag"
+	"github.com/karasunokami/go.otus.hw/copy/copy"
 	"log"
 )
 
@@ -20,7 +21,7 @@ func init() {
 func main() {
 	flag.Parse()
 
-	err := Copy(from, to, limit, offset)
+	err := copy.Copy(from, to, limit, offset)
 	if err != nil {
 		log.Panicf("Failed to copy file: %s", err)
 	}

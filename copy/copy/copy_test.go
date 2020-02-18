@@ -10,7 +10,7 @@ import (
 )
 
 func createFiles() (string, string) {
-	test := "123456790"
+	test := "123456789"
 	b := []byte(test)
 	path := "/tmp/test1"
 	pathTo := "/tmp/test2"
@@ -27,7 +27,7 @@ func TestCopyFiles(t *testing.T) {
 	_ = os.Remove(path)
 	_ = os.Remove(pathTo)
 
-	assert.Equal(t, "123456790", string(b))
+	assert.Equal(t, "123456789", string(b))
 }
 
 func TestCopyFilesWithOffset(t *testing.T) {
@@ -38,7 +38,7 @@ func TestCopyFilesWithOffset(t *testing.T) {
 	_ = os.Remove(path)
 	_ = os.Remove(pathTo)
 
-	assert.Equal(t, "456790", string(b))
+	assert.Equal(t, "456789", string(b))
 }
 
 func TestCopyFilesWithOffsetAndLimit(t *testing.T) {
