@@ -12,7 +12,7 @@ type Service struct {
 }
 
 func NewCalendar() *Service {
-	return &Service{storage: storage.New()}
+	return &Service{storage: storage.NewClient()}
 }
 
 func (s *Service) CreateEvent(startDatetime, endDatetime time.Time) (storage.EventId, error) {

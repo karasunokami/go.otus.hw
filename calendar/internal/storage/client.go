@@ -9,7 +9,7 @@ type Client struct {
 	events map[EventId]event.Event
 }
 
-func New() Client {
+func NewClient() Client {
 	return Client{events: make(map[EventId]event.Event)}
 }
 

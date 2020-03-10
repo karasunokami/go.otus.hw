@@ -2,83 +2,85 @@ package storage
 
 import (
 	"github.com/karasunokami/go.otus.hw/calendar/internal/event"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"testing"
 	"time"
 )
 
-var timeFrom = time.Now()
+type ClientTestSuite struct {
+	suite.Suite
 
-var events = []event.Event{
-	{
-		Title:         "1",
-		StartDatetime: timeFrom,
-		EndDatetime:   timeFrom.Add(time.Minute * 30),
-	},
-	{
-
-		Title:         "2",
-		StartDatetime: timeFrom.Add(time.Minute * 30 * 2),
-		EndDatetime:   timeFrom.Add(time.Minute*30*2 + time.Minute*30),
-	},
+	events []event.Event
+	client Client
 }
 
-func TestClientCreate(t *testing.T) {
-	c := New()
+func (s *ClientTestSuite) SetupTest() {
 
-	_, err := c.Create(events[0])
+	timeFrom := time.Now()
+	s.events = []event.Event{
+		{
+			Title:         "1",
+			StartDatetime: timeFrom,
+			EndDatetime:   timeFrom.Add(time.Minute * 30),
+		},
+		{
 
-	assert.Nil(t, err)
+			Title:         "2",
+			StartDatetime: timeFrom.Add(time.Minute * 30 * 2),
+			EndDatetime:   timeFrom.Add(time.Minute*30*2 + time.Minute*30),
+		},
+	}
+
+	s.client = NewClient()
 }
 
-func TestClientDelete(t *testing.T) {
-	c := New()
+func (s *ClientTestSuite) TestClientCreate() {
+	_, err := s.client.Create(s.events[0])
 
-	id, _ := c.Create(events[0])
-
-	err := c.Delete(id)
-
-	assert.Nil(t, err)
+	s.NoError(err)
 }
 
-func TestClientUpdate(t *testing.T) {
-	c := New()
+func (s *ClientTestSuite) TestClientDelete() {
+	id, _ := s.client.Create(s.events[0])
+	err := s.client.Delete(id)
 
-	id, _ := c.Create(events[0])
-
-	err := c.Update(id, events[1])
-	assert.Nil(t, err)
-
-	evt, err := c.Get(id)
-	assert.Nil(t, err)
-
-	assert.Equal(t, events[1].Title, evt.Title)
-
+	s.NoError(err)
 }
 
-func TestClientGet(t *testing.T) {
-	c := New()
+func (s *ClientTestSuite) TestClientUpdate() {
+	id, _ := s.client.Create(s.events[0])
 
-	id, _ := c.Create(events[0])
+	err := s.client.Update(id, s.events[1])
+	s.NoError(err)
 
-	evt, err := c.Get(id)
-	assert.Nil(t, err)
-	assert.Equal(t, events[0].Title, evt.Title)
+	evt, err := s.client.Get(id)
+	s.NoError(err)
+
+	s.Equal(s.events[1].Title, evt.Title)
 }
 
-func TestCreateWithSameDate(t *testing.T) {
-	c := New()
+func (s *ClientTestSuite) TestClientGet() {
+	id, _ := s.client.Create(s.events[0])
 
-	_, err := c.Create(events[0])
-	assert.Nil(t, err)
+	evt, err := s.client.Get(id)
+	s.NoError(err)
 
-	_, err = c.Create(events[0])
-	assert.EqualError(t, err, "time is busy")
+	s.Equal(s.events[0].Title, evt.Title)
 }
 
-func TestGetNotFound(t *testing.T) {
-	c := New()
+func (s *ClientTestSuite) TestCreateWithSameDate() {
+	_, err := s.client.Create(s.events[0])
+	s.NoError(err)
 
-	_, err := c.Get(1)
-	assert.EqualError(t, err, "event not found")
+	_, err = s.client.Create(s.events[0])
+	s.EqualError(err, "time is busy")
+}
+
+func (s *ClientTestSuite) TestGetNotFound() {
+	_, err := s.client.Get(1)
+	s.EqualError(err, "event not found")
+}
+
+func TestExampleTestSuite(t *testing.T) {
+	suite.Run(t, new(ClientTestSuite))
 }

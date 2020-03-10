@@ -10,13 +10,13 @@ import (
 )
 
 func init() {
-	flag.String("config", "./config/config.yml", "path to yml config file")
+	flag.String("configs", "configs/config.yaml", "path to yml configs file")
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
-	viper.BindPFlags(pflag.CommandLine)
+	_ = viper.BindPFlags(pflag.CommandLine)
 
-	configPath := viper.GetString("config")
+	configPath := viper.GetString("configs")
 	viper.SetConfigFile(configPath)
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalf("Couldn't read configuration file: %s", err.Error())
