@@ -1,1 +1,7 @@
----
+http_server:
+  ip: 127.0.0.1
+  port: 1080
+
+log:
+  file_path: /var/log/calendar.log
+  level: info

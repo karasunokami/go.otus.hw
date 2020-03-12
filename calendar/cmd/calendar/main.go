@@ -1,30 +1,23 @@
 package main
 
 import (
-	"flag"
 	"fmt"
-	"github.com/karasunokami/go.otus.hw/calendar/internal/calendar"
-	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
-	"log"
+	"github.com/karasunokami/go.otus.hw/calendar/internal/app"
+	"github.com/karasunokami/go.otus.hw/calendar/internal/config"
+	"github.com/karasunokami/go.otus.hw/calendar/internal/server"
+	"github.com/sirupsen/logrus"
 )
 
-func init() {
-	flag.String("configs", "configs/config.yaml", "path to yml configs file")
-
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.Parse()
-	_ = viper.BindPFlags(pflag.CommandLine)
-
-	configPath := viper.GetString("configs")
-	viper.SetConfigFile(configPath)
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Couldn't read configuration file: %s", err.Error())
-	}
-}
-
 func main() {
-	var cld calendar.Calendar = calendar.NewCalendar()
+	cont := app.NewContainer()
 
-	fmt.Println("Service started", cld)
+	cont.Set("logger", func(c *app.Container) interface{} {
+		return new(logrus.FieldLogger)
+	})
+
+	cont.Register(new(config.Provider))
+	cont.Register(new(server.Provider))
+
+	err := cont.Get("server").(server.HttpServer).Run()
+	fmt.Print(err)
 }

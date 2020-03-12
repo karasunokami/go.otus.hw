@@ -66,7 +66,7 @@ func (c Client) isTimeAvailable(time time.Time) bool {
 }
 
 func (c Client) eventExists(id EventId) bool {
-	_, isset := c.events[id]
+	_, ok := c.events[id]
 
-	return isset
+	return ok
 }
