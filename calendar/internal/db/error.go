@@ -1,4 +1,4 @@
-package storage
+package db
 
 type Error string
 
@@ -8,5 +8,5 @@ func (e Error) Error() string {
 
 const (
 	TimeBusyError      Error = "time is busy"
-	EventNotFoundError Error = "event not found"
+	EventNotFoundError Error = "dal not found"
 )

@@ -1,7 +1,7 @@
-package storage
+package db
 
 import (
-	"github.com/karasunokami/go.otus.hw/calendar/internal/event"
+	"github.com/karasunokami/go.otus.hw/calendar/internal/dal"
 	"github.com/stretchr/testify/suite"
 	"testing"
 	"time"
@@ -10,14 +10,14 @@ import (
 type ClientTestSuite struct {
 	suite.Suite
 
-	events []event.Event
+	events []dal.Event
 	client Client
 }
 
 func (s *ClientTestSuite) SetupTest() {
 
 	timeFrom := time.Now()
-	s.events = []event.Event{
+	s.events = []dal.Event{
 		{
 			Title:         "1",
 			StartDatetime: timeFrom,
@@ -78,7 +78,7 @@ func (s *ClientTestSuite) TestCreateWithSameDate() {
 
 func (s *ClientTestSuite) TestGetNotFound() {
 	_, err := s.client.Get(1)
-	s.EqualError(err, "event not found")
+	s.EqualError(err, "dal not found")
 }
 
 func TestExampleTestSuite(t *testing.T) {

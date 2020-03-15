@@ -5,21 +5,16 @@ type Config interface {
 }
 
 type HttpListen struct {
-	Ip   string
-	Port string
+	Ip   string `yaml:"ip"`
+	Port string `yaml:"port"`
 }
 
-type LogLevel string
-
-//const (
-//	Info  LogLevel = "info"
-//	Warn  LogLevel = "warn"
-//	Error LogLevel = "error"
-//	Debug LogLevel = "debug"
-//)
+type Log struct {
+	LogFile  string `yaml:"file_path"`
+	LogLevel string `yaml:"level"`
+}
 
 type AppConfig struct {
 	HttpListen `yaml:"http_server"`
-	LogFile    string   `yaml:"log_file"`
-	LogLevel   LogLevel `yaml:"log_level"`
+	Log        `yaml:"log"`
 }

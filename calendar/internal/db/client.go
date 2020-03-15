@@ -1,27 +1,27 @@
-package storage
+package db
 
 import (
-	"github.com/karasunokami/go.otus.hw/calendar/internal/event"
+	"github.com/karasunokami/go.otus.hw/calendar/internal/dal"
 	"time"
 )
 
 type Client struct {
-	events map[EventId]event.Event
+	events map[EventId]dal.Event
 }
 
 func NewClient() Client {
-	return Client{events: make(map[EventId]event.Event)}
+	return Client{events: make(map[EventId]dal.Event)}
 }
 
-func (c *Client) Get(id EventId) (event.Event, error) {
+func (c *Client) Get(id EventId) (dal.Event, error) {
 	if !c.eventExists(id) {
-		return event.Event{}, EventNotFoundError
+		return dal.Event{}, EventNotFoundError
 	}
 
 	return c.events[id], nil
 }
 
-func (c *Client) Create(event event.Event) (EventId, error) {
+func (c *Client) Create(event dal.Event) (EventId, error) {
 	if busy := !c.isTimeAvailable(event.StartDatetime); busy {
 		return 0, TimeBusyError
 	}
@@ -32,7 +32,7 @@ func (c *Client) Create(event event.Event) (EventId, error) {
 	return eventId, nil
 }
 
-func (c *Client) Update(id EventId, event event.Event) error {
+func (c *Client) Update(id EventId, event dal.Event) error {
 	if !c.eventExists(id) {
 		return EventNotFoundError
 	}

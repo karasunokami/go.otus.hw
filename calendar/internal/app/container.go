@@ -48,7 +48,7 @@ func (c *Container) Remove(id string) Container {
 func (c *Container) Get(id string) interface{} {
 	c.mux.RLock()
 
-	service, ok := c.services[id]
+	_, ok := c.services[id]
 
 	c.mux.RUnlock()
 
@@ -56,5 +56,5 @@ func (c *Container) Get(id string) interface{} {
 		log.Panicf("todo to log: service %s undefined", id)
 	}
 
-	return service
+	return c.services[id]
 }

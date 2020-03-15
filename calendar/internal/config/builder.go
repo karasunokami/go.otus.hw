@@ -26,8 +26,10 @@ func (b *builderImpl) Build(path string) *AppConfig {
 			Ip:   "127.0.0.1",
 			Port: "1080",
 		},
-		LogFile:  "/var/log/calendar",
-		LogLevel: "info",
+		Log: Log{
+			LogFile:  "/var/log/calendar",
+			LogLevel: "info",
+		},
 	}
 
 	logFields := logrus.Fields{
