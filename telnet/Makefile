@@ -1,7 +1,7 @@
-PROJECTNAME=gotelnet
+PROJECTNAME=telnet
 
 build:
-	go build -o dist/$(PROJECTNAME) ./cmd/$(PROJECTNAME)/main.go
+	go build -o dist/$(PROJECTNAME) ./main.go
 
 install:
 	go get ./...
