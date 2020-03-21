@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/karasunokami/go.otus.hw/gotelnet/internal/client"
+	"github.com/karasunokami/go.otus.hw/telnet/internal/client"
 	"github.com/spf13/cobra"
 	"os"
 	"time"

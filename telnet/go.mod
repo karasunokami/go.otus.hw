@@ -1,4 +1,4 @@
-module github.com/karasunokami/go.otus.hw/gotelnet
+module github.com/karasunokami/go.otus.hw/telnet
 
 go 1.13
 
