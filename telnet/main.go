@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/karasunokami/go.otus.hw/telnet/internal/client"
 	"github.com/spf13/cobra"
+	"log"
 	"os"
 	"time"
 )
@@ -12,7 +13,7 @@ import (
 var (
 	timeout int
 	cmd     = &cobra.Command{
-		Use: "go-telnet host port",
+		Use: "telnet host port",
 		Args: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 2 {
 				return errors.New("host and port params required")
@@ -26,7 +27,7 @@ var (
 				Timeout: time.Duration(timeout) * time.Second,
 			})
 			if err != nil {
-				fmt.Printf("Error: %s\n", err)
+				log.Fatalf("Error: %s\n", err)
 			}
 			defer client.Close()
 
